@@ -1,0 +1,54 @@
+ROOT 
+  SEQ 
+    FUNCTIONDEFINITION 
+      ID main
+      FUNCTIONPARAMETER 
+      SEQ 
+        INT 
+          ID a
+            INTLIT 2
+        INT 
+          ID s
+        DOUBLE 
+          ID b
+            INTLIT 1
+        READ 
+          ID s
+        WRITE 
+          ID a
+        WHILELOOP 
+          != 
+            ID a
+            INTLIT 5
+          SEQ 
+            = 
+              ID b
+              * 
+                ID b
+                ID b
+            POST++ 
+              ID a
+        DOWHILELOOP 
+          > 
+            ID a
+            INTLIT 1
+          SEQ 
+            POST-- 
+              ID a
+        SWITCH 
+          ID a
+          CASE 
+            INTLIT 0
+            BREAK 
+          CASE 
+            INTLIT 1
+            = 
+              ID b
+              DOUBLELIT 10.000000
+          CASE 
+            INTLIT 2
+            = 
+              ID b
+              DOUBLELIT 100.500000
+          SEQ 
+            BREAK 

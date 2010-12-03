@@ -1,0 +1,30 @@
+int main()
+{
+	int a, b = 1;
+	for (a = 1; a < 5; a++) {
+
+		if (a || b) {
+			a = b++;
+		}
+	
+		if (a && b) {
+			a = ++b;
+		}
+	
+		if (a > b || a < b) {
+			a = b--;
+		}
+
+		if (a >= b && a != b) {
+			a = --b;
+		}
+	
+		if (!(a == b)) {
+			a = b * 2.0;
+		}
+		else
+			a = 5.0;
+	}
+
+	return 0;
+}

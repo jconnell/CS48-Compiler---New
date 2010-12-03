@@ -1,0 +1,27 @@
+int g343g;
+double okay;
+double erw = .234, fr, rt[10];
+int sdf = 234, ser;
+
+double nothing(int whocares, int why)
+{
+	return 1.0;
+}
+
+int docs()
+{
+	g343g = 4;
+	sdf = 10 + 10.0;
+	if (sdf < erw)
+	{
+		int er = 3;
+		++er;
+	}
+	nothing(sdf, g343g);
+	return 1;
+}
+
+int main()
+{
+	docs();
+}

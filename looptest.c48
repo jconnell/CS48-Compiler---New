@@ -1,0 +1,29 @@
+int main() 
+{
+	int a = 2;
+	int s;
+	double b = 1;
+	read s;
+	write a;
+
+	while (a != 5) {
+		b = b * b;
+		a++;
+	}
+
+	do {
+		a--;
+	}
+	while (a > 1);
+
+	switch (a) {
+		case 0:
+			break;
+		case 1:
+			b = 10.0;
+		case 2:
+			b = 100.5;
+		default:
+			break;
+	}
+}
