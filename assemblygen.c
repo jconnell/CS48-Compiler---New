@@ -218,7 +218,7 @@ void AssemblyGen(Quad** q, FILE* file, SymbolTable* s) {
 							if (s3->attrs->type == IntT) {
 								/* Operation between Int var and Int var */
 								fprintf(file, "%d: LD 1, %d(5)\n", AssemNum++, -s3->attrs->memoffset); 
-								fprintf(file, "%d: %s 0, 1, 0\n", AssemNum++, AssemCommand);
+								fprintf(file, "%d: %s 0, 0, 1\n", AssemNum++, AssemCommand);
 							}
 							else if (s3->attrs->type == DouT) {
 								/* Operation between Int var and Double var */
@@ -228,7 +228,7 @@ void AssemblyGen(Quad** q, FILE* file, SymbolTable* s) {
 									fprintf(file, "%d: LDF 1, %d(5)\n", AssemNum++, -s3->attrs->memoffset); 
 								else 
 									fprintf(file, "%d: LDF 1, %d(5)\n", AssemNum++, -s3->attrs->memoffset + 4);
-								fprintf(file, "%d: %sF 0, 1, 0\n", AssemNum++, AssemCommand);
+								fprintf(file, "%d: %sF 0, 0, 1\n", AssemNum++, AssemCommand);
 							}
 							else {
 								fprintf(file, "ERROR - Math\n");
@@ -237,14 +237,14 @@ void AssemblyGen(Quad** q, FILE* file, SymbolTable* s) {
 						else if (a3.kind == IntConst) {
 							/* Operation between Int var and Int constant */
 							fprintf(file, "%d: LDC 1, %d(0)\n", AssemNum++, a3.contents.val);
-							fprintf(file, "%d: %s 0, 1, 0\n", AssemNum++, AssemCommand);
+							fprintf(file, "%d: %s 0, 0, 1\n", AssemNum++, AssemCommand);
 						}
 						else if (a3.kind == DouConst) {
 							/* Operation between Int var and Double constant */
 							type_to_store = 'd';
 							fprintf(file, "%d: CVTIF 0, 0, 0\n", AssemNum++);
 							fprintf(file, "%d: LDFC 1, %f(0)\n", AssemNum++, a3.contents.dval); 
-							fprintf(file, "%d: %sF 0, 1, 0\n", AssemNum++, AssemCommand);
+							fprintf(file, "%d: %sF 0, 0, 1\n", AssemNum++, AssemCommand);
 						}
 						else {
 							fprintf(file, "ERROR - Math\n");
@@ -262,7 +262,7 @@ void AssemblyGen(Quad** q, FILE* file, SymbolTable* s) {
 								/* Operation between Double var and Int var */
 								fprintf(file, "%d: LD 1, %d(5)\n", AssemNum++, -s3->attrs->memoffset);
 								fprintf(file, "%d: CVTIF 1, 1, 1\n", AssemNum++);
-								fprintf(file, "%d: %sF 0, 1, 0\n", AssemNum++, AssemCommand);
+								fprintf(file, "%d: %sF 0, 0, 1\n", AssemNum++, AssemCommand);
 							}
 							else if (s3->attrs->type == DouT) {
 								/* Operation between Double var and Double var */
@@ -270,7 +270,7 @@ void AssemblyGen(Quad** q, FILE* file, SymbolTable* s) {
 									fprintf(file, "%d: LDF 1, %d(5)\n", AssemNum++, -s3->attrs->memoffset);
 								else
 									fprintf(file, "%d: LDF 1, %d(5)\n", AssemNum++, -s3->attrs->memoffset);
-								fprintf(file, "%d: %sF 0, 1, 0\n", AssemNum++, AssemCommand);
+								fprintf(file, "%d: %sF 0, 0, 1\n", AssemNum++, AssemCommand);
 							}
 							else {
 								fprintf(file, "ERROR - Math\n");
@@ -280,12 +280,12 @@ void AssemblyGen(Quad** q, FILE* file, SymbolTable* s) {
 							/* Operation between Double var and Int constant */
 							fprintf(file, "%d: LDC 1, %d(0)\n", AssemNum++, a3.contents.val);
 							fprintf(file, "%d: CVTIF 1, 1, 1\n", AssemNum++);
-							fprintf(file, "%d: %sF 0, 1, 0\n", AssemNum++, AssemCommand);
+							fprintf(file, "%d: %sF 0, 0, 1\n", AssemNum++, AssemCommand);
 						}
 						else if (a3.kind == DouConst) {
 							/* Operation between Double var and Double constant */
 							fprintf(file, "%d: LDFC 1, %f(0)\n", AssemNum++, a3.contents.dval);
-							fprintf(file, "%d: %sF 0, 1, 0\n", AssemNum++, AssemCommand);
+							fprintf(file, "%d: %sF 0, 0, 1\n", AssemNum++, AssemCommand);
 						}
 						else {
 							fprintf(file, "ERROR - Math\n");
@@ -301,14 +301,14 @@ void AssemblyGen(Quad** q, FILE* file, SymbolTable* s) {
 						if (s3->attrs->type == IntT) {
 							/* Operation between Int constant and Int var */
 							fprintf(file, "%d: LD 1, %d(5)\n", AssemNum++, -s3->attrs->memoffset);
-							fprintf(file, "%d: %s 0, 1, 0\n", AssemNum++, AssemCommand);
+							fprintf(file, "%d: %s 0, 0, 1\n", AssemNum++, AssemCommand);
 						}
 						else if (s3->attrs->type == DouT) {
 							/* Operation between Int constant and Double var */
 							type_to_store = 'd';
 							fprintf(file, "%d: CVTIF 0, 0, 0\n", AssemNum++);
 							fprintf(file, "%d: LDF 1, %d(5)\n", AssemNum++, -s3->attrs->memoffset);
-							fprintf(file, "%d: %sF 0, 1, 0\n", AssemNum++, AssemCommand);
+							fprintf(file, "%d: %sF 0, 0, 1\n", AssemNum++, AssemCommand);
 						}
 						else {
 							fprintf(file, "ERROR - Math\n");
@@ -317,14 +317,14 @@ void AssemblyGen(Quad** q, FILE* file, SymbolTable* s) {
 					else if (a3.kind == IntConst) {
 						/* Operation between Int constant and Int constant */
 						fprintf(file, "%d: LDC 1, %d(0)\n", AssemNum++, a3.contents.val);
-						fprintf(file, "%d: %s 0, 1, 0\n", AssemNum++, AssemCommand);
+						fprintf(file, "%d: %s 0, 0, 1\n", AssemNum++, AssemCommand);
 					}
 					else if (a3.kind == DouConst) {
 						/* Operation between Int constant and Double constant */
 						type_to_store = 'd';
 						fprintf(file, "%d: CVTIF 0, 0, 0\n", AssemNum++);
 						fprintf(file, "%d: LDFC 1, %f(0)\n", AssemNum++, a3.contents.dval);
-						fprintf(file, "%d: %sF 0, 1, 0\n", AssemNum++, AssemCommand);
+						fprintf(file, "%d: %sF 0, 0, 1\n", AssemNum++, AssemCommand);
 					}
 					else {
 						fprintf(file, "ERROR - Math\n");
@@ -338,12 +338,12 @@ void AssemblyGen(Quad** q, FILE* file, SymbolTable* s) {
 							/* Operation between Double constant and Int var */
 							fprintf(file, "%d: LD 1, %d(5)\n", AssemNum++, -s3->attrs->memoffset);
 							fprintf(file, "%d: CVTIF 1, 1, 1\n", AssemNum++);
-							fprintf(file, "%d: %sF 0, 1, 0\n", AssemNum++, AssemCommand);
+							fprintf(file, "%d: %sF 0, 0, 1\n", AssemNum++, AssemCommand);
 						}
 						else if (s3->attrs->type == DouT) {
 							/* Operation between Double constant and Double var */
 							fprintf(file, "%d: LDF 1, %d(5)\n", AssemNum++, -s3->attrs->memoffset);
-							fprintf(file, "%d: %sF 0, 1, 0\n", AssemNum++, AssemCommand);
+							fprintf(file, "%d: %sF 0, 0, 1\n", AssemNum++, AssemCommand);
 						}
 						else {
 							fprintf(file, "ERROR - Math\n");
@@ -353,12 +353,12 @@ void AssemblyGen(Quad** q, FILE* file, SymbolTable* s) {
 						/* Operation between Double constant and Int constant */
 						fprintf(file, "%d: LDC 1, %d(0)\n", AssemNum++, a3.contents.val);
 						fprintf(file, "%d: CVTIF 1, 1, 1\n", AssemNum++);
-						fprintf(file, "%d: %sF 0, 1, 0\n", AssemNum++, AssemCommand);
+						fprintf(file, "%d: %sF 0, 0, 1\n", AssemNum++, AssemCommand);
 					}
 					else if (a3.kind == DouConst) {
 						/* Operation between Double constant and Double constant */
 						fprintf(file, "%d: LDFC 1, %f(0)\n", AssemNum++, a3.contents.dval);
-						fprintf(file, "%d: %sF 0, 1, 0\n", AssemNum++, AssemCommand);
+						fprintf(file, "%d: %sF 0, 0, 1\n", AssemNum++, AssemCommand);
 					}
 					else {
 						fprintf(file, "ERROR - Math\n");
