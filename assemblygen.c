@@ -42,6 +42,7 @@ void AssemblyGen(Quad** q, FILE* file, SymbolTable* s) {
 	int AssemNum = 0;	// Assembly code line number
 	int quadStartLocations[10000];
 	
+	int scopeStart[50] = {0};
 	int curScope = 0;
 	/* For each quad, we represent it with the form
 	 * (op, a1, a2, a3)
@@ -269,7 +270,7 @@ void AssemblyGen(Quad** q, FILE* file, SymbolTable* s) {
 								if (s3->attrs->memoffset % 8 == 0)
 									fprintf(file, "%d: LDF 1, %d(5)\n", AssemNum++, -s3->attrs->memoffset);
 								else
-									fprintf(file, "%d: LDF 1, %d(5)\n", AssemNum++, -s3->attrs->memoffset);
+									fprintf(file, "%d: LDF 1, %d(5)\n", AssemNum++, -s3->attrs->memoffset + 4);
 								fprintf(file, "%d: %sF 0, 0, 1\n", AssemNum++, AssemCommand);
 							}
 							else {
@@ -307,7 +308,11 @@ void AssemblyGen(Quad** q, FILE* file, SymbolTable* s) {
 							/* Operation between Int constant and Double var */
 							type_to_store = 'd';
 							fprintf(file, "%d: CVTIF 0, 0, 0\n", AssemNum++);
-							fprintf(file, "%d: LDF 1, %d(5)\n", AssemNum++, -s3->attrs->memoffset);
+							if (s3->attrs->memoffset % 8 == 0)
+								fprintf(file, "%d: LDF 1, %d(5)\n", AssemNum++, -s3->attrs->memoffset);
+							else 
+								fprintf(file, "%d: LDF 1, %d(5)\n", AssemNum++, -s3->attrs->memoffset + 4);
+
 							fprintf(file, "%d: %sF 0, 0, 1\n", AssemNum++, AssemCommand);
 						}
 						else {
@@ -342,7 +347,10 @@ void AssemblyGen(Quad** q, FILE* file, SymbolTable* s) {
 						}
 						else if (s3->attrs->type == DouT) {
 							/* Operation between Double constant and Double var */
-							fprintf(file, "%d: LDF 1, %d(5)\n", AssemNum++, -s3->attrs->memoffset);
+							if (s3->attrs->memoffset % 8 == 0)
+								fprintf(file, "%d: LDF 1, %d(5)\n", AssemNum++, -s3->attrs->memoffset);
+							else
+								fprintf(file, "%d: LDF 1, %d(5)\n", AssemNum++, -s3->attrs->memoffset + 4);
 							fprintf(file, "%d: %sF 0, 0, 1\n", AssemNum++, AssemCommand);
 						}
 						else {
@@ -374,10 +382,10 @@ void AssemblyGen(Quad** q, FILE* file, SymbolTable* s) {
 				/* Store double in double */
 				if (type_to_store == 'd' && type_of_storage == 'd') {		
 					//fprintf(file, "%d: STF 0, %d(5)\n", AssemNum++, -s1->attrs->memoffset);
-					if (s2->attrs->memoffset % 8 == 0) 
-						fprintf(file, "%d: STF 0, %d(5)\n", AssemNum++, -s2->attrs->memoffset);
+					if (s1->attrs->memoffset % 8 == 0) 
+						fprintf(file, "%d: STF 0, %d(5)\n", AssemNum++, -s1->attrs->memoffset);
 					else  
-						fprintf(file, "%d: STF 0, %d(5)\n", AssemNum++, -s2->attrs->memoffset + 4);
+						fprintf(file, "%d: STF 0, %d(5)\n", AssemNum++, -s1->attrs->memoffset + 4);
 				}
 				/* Store double in int */
 				else if (type_to_store == 'd' && type_of_storage == 'i') {	
@@ -520,7 +528,10 @@ void AssemblyGen(Quad** q, FILE* file, SymbolTable* s) {
 						else if (s3->attrs->type == DouT) {
 							/* Ineqality between Int constant and Double var */
 							fprintf(file, "%d: CVTIF 0, 0, 0\n", AssemNum++);
-							fprintf(file, "%d: LDF 1, %d(5)\n", AssemNum++, -s3->attrs->memoffset);
+							if (s3->attrs->memoffset % 8 == 0)
+								fprintf(file, "%d: LDF 1, %d(5)\n", AssemNum++, -s3->attrs->memoffset);
+							else
+								fprintf(file, "%d: LDF 1, %d(5)\n", AssemNum++, -s3->attrs->memoffset + 4);
 							fprintf(file, "%d: SUBF 0, 1, 0\n", AssemNum++);
 							fprintf(file, "%d: JF%s 0, 2(7)\n", AssemNum++, AssemCommand);
 							fprintf(file, "%d: LDC 0, 0(0)\n", AssemNum++);
@@ -564,7 +575,10 @@ void AssemblyGen(Quad** q, FILE* file, SymbolTable* s) {
 						}
 						else if (s3->attrs->type == DouT) {
 							/* Ineqality between Double constant and Double var */
-							fprintf(file, "%d: LDF 1, %d(5)\n", AssemNum++, -s3->attrs->memoffset);
+							if (s3->attrs->memoffset % 8 == 0)
+								fprintf(file, "%d: LDF 1, %d(5)\n", AssemNum++, -s3->attrs->memoffset);
+							else
+								fprintf(file, "%d: LDF 1, %d(5)\n", AssemNum++, -s3->attrs->memoffset + 4);
 						}
 						else {
 							fprintf(file, "ERROR - Inequality\n");
@@ -629,7 +643,7 @@ void AssemblyGen(Quad** q, FILE* file, SymbolTable* s) {
 						if (s1->attrs->memoffset % 8 == 0) 
 							fprintf(file, "%d: STF 0, %d(5)\n", AssemNum++, -s1->attrs->memoffset);
 						else
-							fprintf(file, "%d: STF 0, %d(5)\n", AssemNum++, -(s1->attrs->memoffset - 4));
+							fprintf(file, "%d: STF 0, %d(5)\n", AssemNum++, -s1->attrs->memoffset + 4);
 						//fprintf(file, "%d: STF 0, %d(5)\n", AssemNum++, -s1->attrs->memoffset);
 					}
 					else if (a2.kind == IntConst) {
@@ -639,7 +653,7 @@ void AssemblyGen(Quad** q, FILE* file, SymbolTable* s) {
 						if (s1->attrs->memoffset % 8 == 0)
 							fprintf(file, "%d: STF 0, %d(5)\n", AssemNum++, -s1->attrs->memoffset);
 						else 
-							fprintf(file, "%d: STF 0, %d(5)\n", AssemNum++, -(s1->attrs->memoffset - 4));
+							fprintf(file, "%d: STF 0, %d(5)\n", AssemNum++, -s1->attrs->memoffset + 4);
 						//fprintf(file, "%d: STF 0, %d(5)\n", AssemNum++, -s1->attrs->memoffset);
 					}
 					else {
@@ -705,7 +719,11 @@ void AssemblyGen(Quad** q, FILE* file, SymbolTable* s) {
 						fprintf(file, "%d: OUT 0, 0, 0\n", AssemNum++);
 					}
 					else if (s1->attrs->type == DouT) {
-						fprintf(file, "%d: LDF 0, %d(5)\n", AssemNum++, -s1->attrs->memoffset);
+						if (s1->attrs->memoffset % 8 == 0)
+							fprintf(file, "%d: LDF 0, %d(5)\n", AssemNum++, -s1->attrs->memoffset);
+						else 
+							fprintf(file, "%d: LDF 0, %d(5)\n", AssemNum++, -s1->attrs->memoffset + 4);
+
 						fprintf(file, "%d: OUTF 0, 0, 0\n", AssemNum++);
 					}
 					else {
@@ -752,11 +770,13 @@ void AssemblyGen(Quad** q, FILE* file, SymbolTable* s) {
 			case enterScope:
 				//printf(" Level %d \n", GetNodeLevel(s1));
 				printf("ENTERING SCOPE\n");
-				curScope = i;
+				scopeStart[++curScope] = i;
 				EnterScope(symtab);
 				//continue;
 				break;
 			case exitScope:
+				scopeStart[--curScope] = 0;
+				
 				LeaveScope(symtab);
 				//printf(" Level %d \n", GetNodeLevel(s1));
 				//continue;
@@ -793,7 +813,7 @@ void AssemblyGen(Quad** q, FILE* file, SymbolTable* s) {
 		a3 = quads[i]->addr3;
 		
 		if (quads[i]->op == gotoq) {
-			fprintf(file, "%d: LDA 7, %d(7)\n", quadStartLocations[i], (quadStartLocations[a1.contents.val]) - quadStartLocations[i]);
+			fprintf(file, "%d: LDA 7, %d(7)\n", quadStartLocations[i], (quadStartLocations[a1.contents.val]) - quadStartLocations[i] - 1);
 		}
 		i++;
 	}
@@ -810,13 +830,16 @@ void AssemblyGen(Quad** q, FILE* file, SymbolTable* s) {
 				s1 = LookupInSymbolTable(symtab, a1.contents.name);
 				if (s1->attrs->type == IntT) {
 					fprintf(file, "%d: LD 0, %d(5)\n", quadStartLocations[i], -s1->attrs->memoffset);
-					fprintf(file, "%d: JEQ 7, 1(7)\n", quadStartLocations[i]+1);
-					fprintf(file, "%d: LDA 7, %d(7)\n", quadStartLocations[i]+2, (quadStartLocations[a2.contents.val]) - quadStartLocations[i]);
+					fprintf(file, "%d: JNE 0, 1(7)\n", quadStartLocations[i]+1);
+					fprintf(file, "%d: LDA 7, %d(7)\n", quadStartLocations[i]+2, (quadStartLocations[a2.contents.val]) - (quadStartLocations[i]+2) - 1);
 				}
 				else if (s1->attrs->type == DouT) {
-					fprintf(file, "%d: LDF 0, %d(5)\n", quadStartLocations[i], -s1->attrs->memoffset);
-					fprintf(file, "%d: JFEQ 7, 1(7)\n", quadStartLocations[i]+1);
-					fprintf(file, "%d: LDA 7, %d(7)\n", quadStartLocations[i]+2, (quadStartLocations[a2.contents.val]) - quadStartLocations[i]);
+					if (s1->attrs->memoffset % 8 == 0)
+						fprintf(file, "%d: LDF 0, %d(5)\n", quadStartLocations[i], -s1->attrs->memoffset);
+					else 
+						fprintf(file, "%d: LDF 0, %d(5)\n", quadStartLocations[i], -s1->attrs->memoffset + 4);
+					fprintf(file, "%d: JFNE 0, 1(7)\n", quadStartLocations[i]+1);
+					fprintf(file, "%d: LDA 7, %d(7)\n", quadStartLocations[i]+2, (quadStartLocations[a2.contents.val]) - (quadStartLocations[i]+2) - 1);
 				}
 				else {
 					printf("ERROR - IfFalse\n");

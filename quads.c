@@ -791,10 +791,10 @@ int CG(ast_node n)
 			ar1.contents.name = NewTemp(4);
 			
 			ar2.kind = IntConst;
-			ar2.contents.val = 1;
+			ar2.contents.val = 0;
 			
 			ar3.kind = IntConst;
-			ar3.contents.val = 0;
+			ar3.contents.val = 1;
 			
 			ar4.kind = String;
 			ar4.contents.name = NewTemp(4);
